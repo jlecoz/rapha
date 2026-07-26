@@ -467,13 +467,7 @@
     <span class="g-eqlab"><span class="g-eq" aria-hidden="true"></span><span class="g-lbl">— En images</span></span>
     <h2>Carnet</h2>
     <p class="d">Ce qu'elle voit sur le terrain — entre deux prises de son. Des <em>visages</em>, des lumières, des routes. Cliquez pour agrandir.</p>
-    <div class="filters" id="pfilters">
-      <button class="on" data-f="all">Tout</button>
-      <button data-f="tchad">Tchad</button>
-      <button data-f="cameroun">Cameroun</button>
-      <button data-f="senegal">Sénégal</button>
-      <button data-f="paysage">Paysages</button>
-    </div>
+    <div class="filters" id="pfilters"></div>
     <div class="grid" id="pgrid"></div>
     <p class="note" id="pnote"></p>
   </div>
@@ -815,36 +809,50 @@ function playHero(){
   fetch('modules.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; })
     .then(function(d){ if(d && d.modules && d.modules.length) modRender(d); }).catch(function(){});
 
-  /* ---------- En images: masonry grid + lightbox (prev/next) ---------- */
-  var PHOTOS=[], TARGET=40, order=[], curFilter='all';
-  var pgrid=document.getElementById('pgrid'), pnote=document.getElementById('pnote');
+  /* ---------- En images: Carnet grid + lightbox; dynamic filters; live from photos.json ---------- */
+  var PHOTOS=[], order=[], curFilter='all', META={};
+  var LABELS={tchad:"Tchad",cameroun:"Cameroun",senegal:"Sénégal",cotedivoire:"Côte d'Ivoire",
+    mali:"Mali",niger:"Niger",burkinafaso:"Burkina Faso",benin:"Bénin",rdc:"RD Congo",gabon:"Gabon",
+    maroc:"Maroc",paysage:"Paysages",paysages:"Paysages"};
+  function labelFor(t){ return LABELS[t] || (t.charAt(0).toUpperCase()+t.slice(1)); }
+  var pgrid=document.getElementById('pgrid'), pnote=document.getElementById('pnote'), pfilters=document.getElementById('pfilters');
+  function buildFilters(){
+    if(!pfilters) return;
+    var tags=[]; PHOTOS.forEach(function(p){ if(p.tag && tags.indexOf(p.tag)<0) tags.push(p.tag); });
+    if(tags.length<2){ pfilters.style.display='none'; pfilters.innerHTML=''; return; }  // no point showing 1 filter
+    pfilters.style.display='';
+    var html='<button class="on" data-f="all">Tout</button>';
+    tags.forEach(function(t){ html+='<button data-f="'+esc(t)+'">'+esc(labelFor(t))+'</button>'; });
+    pfilters.innerHTML=html;
+  }
   function galBuild(){
     if(!pgrid) return;
     var html=''; order=[];
     PHOTOS.forEach(function(p,i){
       if(curFilter!=='all' && p.tag!==curFilter) return;
       order.push(i);
-      html+='<a class="cell" data-i="'+i+'"><img src="'+p.img+'" alt="'+esc(p.cap)+'" loading="lazy">'+
-        '<span class="pcap"><span class="pl">'+esc(p.place)+'</span><span class="tx">'+esc(p.cap)+'</span></span></a>';
+      html+='<a class="cell" data-i="'+i+'"><img src="'+esc(p.img)+'" alt="'+esc(p.cap)+'" loading="lazy">'+
+        '<span class="pcap">'+(p.place?'<span class="pl">'+esc(p.place)+'</span>':'')+'<span class="tx">'+esc(p.cap)+'</span></span></a>';
     });
-    if(curFilter==='all'){
-      var remaining=Math.max(0, TARGET-PHOTOS.length);
-      for(var k=0;k<Math.min(remaining,2);k++) html+='<div class="cell soon"><span>+ '+remaining+' à venir</span></div>';
-    }
     pgrid.innerHTML=html;
     [].slice.call(pgrid.querySelectorAll('.cell[data-i]')).forEach(function(el){
       el.addEventListener('click',function(){ openPlb(parseInt(el.getAttribute('data-i'),10)); });
     });
-    if(pnote) pnote.innerHTML = PHOTOS.length+' photos affichées · aperçu · la grille complète ('+TARGET+') reprendra ses fichiers originaux.';
+    if(pnote){
+      var ig='<a href="https://www.instagram.com/rapha_constant/" target="_blank" rel="noopener" style="color:var(--gold)">Instagram</a>';
+      if(META.source==='instagram') pnote.innerHTML='Mis à jour automatiquement depuis '+ig+(META.updated?' · '+esc(META.updated):'')+' · '+PHOTOS.length+' photos.';
+      else pnote.innerHTML=PHOTOS.length+' photos · aperçu. La galerie se remplira automatiquement depuis son '+ig+'.';
+    }
   }
-  var pfilters=document.getElementById('pfilters');
   if(pfilters) pfilters.addEventListener('click',function(e){
     var b=e.target.closest('button'); if(!b) return;
     [].slice.call(this.querySelectorAll('button')).forEach(function(x){x.classList.remove('on');});
     b.classList.add('on'); curFilter=b.getAttribute('data-f'); galBuild();
   });
   var plb=document.getElementById('plb'), plbimg=document.getElementById('plbimg'), pcap2=document.getElementById('pcap2'), pos=0;
-  function pShow(){ var p=PHOTOS[order[pos]]; if(!p) return; plbimg.src=p.img; pcap2.textContent=p.place+' — '+p.cap; }
+  function pShow(){ var p=PHOTOS[order[pos]]; if(!p) return; plbimg.src=p.img; plbimg.alt=p.cap||'';
+    var t=(p.place?p.place+' — ':'')+(p.cap||'');
+    pcap2.innerHTML=esc(t)+(p.permalink?' · <a href="'+esc(p.permalink)+'" target="_blank" rel="noopener" style="color:var(--gold)">Voir sur Instagram ↗</a>':''); }
   function openPlb(i){ if(!plb) return; pos=order.indexOf(i); if(pos<0)pos=0; pShow(); plb.classList.add('open'); document.body.style.overflow='hidden'; }
   function closePlb(){ if(!plb) return; plb.classList.remove('open'); document.body.style.overflow=''; }
   function pStep(d){ if(!order.length) return; pos=(pos+d+order.length)%order.length; pShow(); }
@@ -858,8 +866,8 @@ function playHero(){
     if(e.key==='Escape')closePlb(); if(e.key==='ArrowRight')pStep(1); if(e.key==='ArrowLeft')pStep(-1);
   });
   fetch('photos.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; })
-    .then(function(d){ if(d){ if(typeof d.target==='number')TARGET=d.target; if(d.photos&&d.photos.length)PHOTOS=d.photos; } galBuild(); })
-    .catch(function(){ galBuild(); });
+    .then(function(d){ if(d){ META=d; if(d.photos&&d.photos.length)PHOTOS=d.photos; } buildFilters(); galBuild(); })
+    .catch(function(){ buildFilters(); galBuild(); });
 
   /* ---------- Palette / ambiance: live switch, persisted per device ---------- */
   var THEMES={terrain:1,uniforme:1,indigo:1,baie:1}, KEY='rc-ambiance';

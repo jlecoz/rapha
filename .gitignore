@@ -9,3 +9,8 @@ Thumbs.db
 
 # Node (only if tooling is ever added; the site itself is buildless)
 node_modules/
+
+# Instagram sync — refreshed token handed to the workflow for rotation; never commit it.
+ig-token.txt
+.env
+# NOTE: photos/ (the downloaded full-res images) ARE committed — do not ignore them.

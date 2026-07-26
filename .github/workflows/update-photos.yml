@@ -1,0 +1,58 @@
+name: Update photos from Instagram
+
+# Pulls Raphaëlle's own Instagram photos (official Graph API), downloads the
+# full-res images into photos/, and refreshes photos.json. New posts appear in
+# the "En images" grid automatically — no code changes needed.
+#
+# Setup (one-time): see INSTAGRAM-SETUP.md
+#   - Required secret:  IG_TOKEN  (long-lived Instagram access token)
+#   - Optional secret:  GH_PAT    (fine-grained PAT w/ "Secrets: write" — lets the
+#                                  job rotate IG_TOKEN automatically before it expires)
+
+on:
+  schedule:
+    - cron: "30 6 * * *"    # daily at 06:30 UTC (just after the podcast job)
+  workflow_dispatch: {}      # manual "Run workflow" from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Sync Instagram photos and rebuild photos.json
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: node build-photos.mjs
+
+      - name: Commit changes if anything is new
+        run: |
+          git config user.name  "photo-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add photos.json photos 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: refresh photos from Instagram ($(date -u +%F))"
+            git push
+          fi
+
+      - name: Rotate IG_TOKEN (optional — needs GH_PAT)
+        if: ${{ hashFiles('ig-token.txt') != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "No GH_PAT set — skipping token rotation (token still valid ~60 days)."
+            exit 0
+          fi
+          echo "::add-mask::$(cat ig-token.txt)"
+          gh secret set IG_TOKEN --body "$(cat ig-token.txt)" && echo "IG_TOKEN rotated."
+          rm -f ig-token.txt
