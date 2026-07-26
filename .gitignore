@@ -1,0 +1,11 @@
+# Reference material — the standalone component demos we lift sections from.
+# Not served; kept locally only. (modules.html, photos.html, palette-garderobe.html, …)
+resources/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+
+# Node (only if tooling is ever added; the site itself is buildless)
+node_modules/
