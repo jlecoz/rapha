@@ -1,0 +1,43 @@
+/* ============================================================
+   Raphaëlle Constant — Design Tokens (single source of truth)
+   ------------------------------------------------------------
+   This is the ONE place colours, type and core metrics live.
+   Every page links this file and references var(--token) — so
+   changing a value here updates index.html, reportages.html and
+   the style guide together. Keep it in sync with the brand
+   style guide (raphaelle-constant-style-guide.html).
+   ============================================================ */
+
+:root{
+  /* ---- Core palette ---- */
+  --ink:        #171310;              /* warm near-black (backgrounds) */
+  --ink-2:      #211a14;              /* raised dark surface (cards, panels) */
+  --ink-3:      #2c231b;              /* dark hover / tertiary */
+  --paper:      #FBF6EC;              /* warm cream (page background) */
+  --sand:       #EFE2CA;             /* sand section background */
+  --gold:       #E0A24E;             /* golden-hour accent */
+  --ochre:      #B96B34;             /* earthy secondary accent */
+  --red:        #D2321F;             /* signal red (RFI heritage) — accents only */
+  --olive:      #7C7A45;             /* muted savanna green */
+
+  /* ---- Lines & muted ---- */
+  --line:       rgba(23,19,16,.14);  /* hairline on light */
+  --line-d:     rgba(255,255,255,.12);/* hairline on dark */
+  --muted:      #6f645a;             /* muted text on light */
+
+  /* ---- Text tints on dark (were hard-coded; now tokens) ---- */
+  --on-dark:        #ece1cf;         /* body text on ink */
+  --on-dark-soft:   #d9cdba;         /* secondary text on ink */
+  --on-dark-mute:   #c9baa2;         /* captions / meta on ink */
+  --card-dark:      #2a211a;         /* image-card fallback base */
+
+  /* ---- Typography ---- */
+  --font-display: "Anton", sans-serif;              /* big headlines, numbers */
+  --font-label:   "Oswald", sans-serif;             /* kickers, tags, nav, meta */
+  --font-body:    "Newsreader", Georgia, serif;     /* prose, titles, verbatim */
+
+  /* ---- Metrics ---- */
+  --maxw:   1180px;   /* content max width */
+  --radius: 6px;      /* default corner radius */
+  --gap:    22px;     /* default grid gap */
+}

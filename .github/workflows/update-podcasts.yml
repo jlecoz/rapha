@@ -1,0 +1,37 @@
+name: Update podcasts from RFI
+
+# Re-crawls Raphaëlle's RFI author page and refreshes episodes.json + covers.
+# New RFI episodes appear on the site automatically — no code changes needed.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # every day at 06:00 UTC
+  workflow_dispatch: {}    # allow manual "Run workflow" from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Crawl RFI and rebuild episodes.json
+        run: node build-podcasts.mjs
+
+      - name: Commit changes if anything is new
+        run: |
+          git config user.name  "podcast-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add episodes.json covers
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: refresh podcasts from RFI ($(date -u +%F))"
+            git push
+          fi
