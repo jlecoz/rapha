@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Raphaëlle Constant — Écouter le monde · Reportages sonores RFI</title>
 <link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Les reportages sonores de Raphaëlle Constant pour RFI. Fermez les yeux, écoutez : la vie, les combats et les joies d'autres femmes et hommes, au plus près — à travers l'Afrique.">
@@ -194,12 +195,8 @@
     .reveal,.reveal-grid>*,.reveal-headline,.reveal-body,.reveal-pop,.reveal-blur,.reveal-left,.reveal-right{
       opacity:1 !important;transform:none !important;filter:none !important;transition:none !important}
   }
-  /* hero cards — staggered rise (choreographed on load) */
-  .hscroll .hcard{opacity:0;transform:translateY(26px);
-    transition:opacity var(--dur-move) var(--ease-arrive),transform var(--dur-move) var(--ease-arrive);
-    transition-delay:calc(var(--i,0) * var(--stagger))}
-  .hscroll .hcard.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){ .hscroll .hcard{opacity:1 !important;transform:none !important;transition:none !important} }
+  /* hero cards use the shared lazy-stagger reveal (.rc-rise / .rc-in via rcStagger in ui.js) —
+     same effect as the "Ses modules" strip: each card animates in as it scrolls into view */
 
   /* radio signature — equalizer label */
   .eq-label{display:inline-flex;align-items:center;gap:11px}
@@ -533,7 +530,8 @@ function heroCard(ep,i){
 function renderHero(data){
   const eps=(data.episodes||[]).slice().sort((a,b)=>((a.id<b.id)?1:-1)).slice(0,10);   // always up to 10 in the carousel
   const list=eps.length?eps:SEED.episodes;
-  document.getElementById('hscroll').innerHTML=list.map(heroCard).join(''); if(window.__afterHeroRender) window.__afterHeroRender();
+  document.getElementById('hscroll').innerHTML=list.map(heroCard).join('');
+  if(window.rcStagger) window.rcStagger(document.getElementById('hscroll').querySelectorAll('.hcard'));  // lazy scroll-stagger (same as "Ses modules")
 }
 renderHero(SEED);
 fetch('episodes.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&d.episodes&&d.episodes.length) renderHero(d); }).catch(()=>{});

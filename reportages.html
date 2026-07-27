@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reportages — Raphaëlle Constant · Tous les podcasts RFI</title>
 <link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Tous les reportages sonores de Raphaëlle Constant pour RFI — le dernier en tête. Filtrez par émission et écoutez directement sur RFI.">
@@ -178,7 +179,7 @@
     </div>
     <div class="filters reveal reveal-body" id="filters"></div>
     <div class="filters filters-loc reveal reveal-body" id="filters-loc"></div>
-    <div class="eps reveal-grid" id="eps"></div>
+    <div class="eps" id="eps"></div>
     <p class="note" id="note"></p>
   </div>
 </section>
@@ -252,6 +253,9 @@ function render(data){
   if(latest.firstElementChild) latest.firstElementChild.classList.add('reveal','reveal-blur');
   if(window.revealScan){ window.revealScan(document.getElementById('latest'));
                          window.revealScan(document.getElementById('eps').parentNode); }
+  // Reveal the grid cards with the per-card lazy stagger (reliable on a tall grid,
+  // unlike the whole-grid reveal which never hit its threshold). Same effect as "Ses modules".
+  if(window.rcStagger) window.rcStagger(document.querySelectorAll('#eps .ep'));
   // build filter chips from the data (émission + lieu)
   var shows=[]; list.forEach(function(e){ if(e.showKey && !shows.some(function(s){return s.key===e.showKey;})) shows.push({key:e.showKey,label:e.show}); });
   var countries=[]; list.forEach(function(e){ if(e.country && countries.indexOf(e.country)<0) countries.push(e.country); });
