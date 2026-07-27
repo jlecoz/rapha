@@ -734,17 +734,14 @@ function playHero(){
     var info = '<div class="info"><div class="stag">'+esc(m.show?m.show+' · RFI':'À venir')+'</div><div class="mti">'+esc(m.title||'Bientôt')+'</div>'+
       '<div class="foot"><span class="pl">'+esc(m.place||'')+'</span>'+(m.url?'<span class="watch">Regarder ↗</span>':'')+'</div></div>';
     if(!m.url) return '<div class="modcard soon">'+thumbBlock+info+'</div>';
-    return '<a class="modcard" href="'+esc(m.url)+'" data-url="'+esc(m.url)+'" role="button" tabindex="0">'+thumbBlock+info+'</a>';
+    return '<a class="modcard" href="'+esc(m.url)+'" target="_blank" rel="noopener">'+thumbBlock+info+'</a>';
   }
   function modRender(data){
     if(!mstrip) return;
     var mods = ((data && data.modules) ? data.modules : MOD_FALLBACK.modules).slice();
     while(mods.length < MOD_MIN) mods.push({url:"",show:"",title:"Bientôt",place:"",dur:"< 5 min"}); // always fill the carousel
     mstrip.innerHTML = mods.map(modCard).join('');
-    [].slice.call(mstrip.querySelectorAll('.modcard[data-url]')).forEach(function(el){
-      el.addEventListener('click', function(e){ e.preventDefault(); openMlb(el.getAttribute('data-url')); });
-      el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openMlb(el.getAttribute('data-url')); } });
-    });
+    // module cards are plain _blank links now — clicking opens the reel on Instagram in a new tab
     var vids = mstrip.querySelectorAll('.modcard video');
     if(vids.length && 'IntersectionObserver' in window){
       var vio = new IntersectionObserver(function(es){ es.forEach(function(e){
