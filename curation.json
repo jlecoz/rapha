@@ -1,0 +1,20 @@
+{
+  "_comment": "Editorial override for the reportage crawler. url -> true (force-feature as flagship) | false (force-hide). Seeded with the original 14 hand-picked reportages so they always survive classification. Add/remove entries to curate; the crawler (build-podcasts.mjs) reads this.",
+  "include": {
+    "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20260719-%C3%A0-abidjan-dans-la-roue-de-yasmine-diawara": true,
+    "https://www.rfi.fr/fr/podcasts/atelier-des-m%C3%A9dias/20260704-c-est-l-histoire-d-un-hackathon-interg%C3%A9n%C3%A9rationnel-en-c%C3%B4te-d-ivoire": true,
+    "https://www.rfi.fr/fr/podcasts/priorit%C3%A9-sant%C3%A9/20260615-extr%C3%AAme-nord-cameroun-lutter-contre-la-malnutrition-infantile-en-zone-de-crise": true,
+    "https://www.rfi.fr/fr/podcasts/atelier-des-m%C3%A9dias/20260606-portrait-d-une-radio-communautaire-au-cameroun-%C3%A9chos-des-montagnes": true,
+    "https://www.rfi.fr/fr/podcasts/priorit%C3%A9-sant%C3%A9/20260429-soigner-dans-les-airs-un-reportage-long-format-sur-la-m%C3%A9decine-a%C3%A9ronautique-en-conditions-extr%C3%AAmes": true,
+    "https://www.rfi.fr/fr/podcasts/priorit%C3%A9-sant%C3%A9/20260422-comment-am%C3%A9liorer-le-d%C3%A9veloppement-de-la-petite-enfance-en-guin%C3%A9e": true,
+    "https://www.rfi.fr/fr/podcasts/8-milliards-de-voisins/20260415-le-quotidien-des-exil%C3%A9s-soudanais-dans-les-camps-de-r%C3%A9fugi%C3%A9s-au-tchad": true,
+    "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20260329-dans-la-r%C3%A9serve-naturelle-communautaire-du-boundou-ici-c-est-prot%C3%A9g%C3%A9": true,
+    "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20260125-s%C3%A9n%C3%A9gal-oriental-sur-la-piste-du-cam%C3%A9l%C3%A9on-02": true,
+    "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20260118-s%C3%A9n%C3%A9gal-oriental-sur-la-piste-du-cam%C3%A9l%C3%A9on-01": true,
+    "https://www.rfi.fr/fr/podcasts/priorit%C3%A9-sant%C3%A9/20251120-prise-en-charge-des-femmes-atteintes-de-vih-au-maroc": true,
+    "https://www.rfi.fr/fr/podcasts/8-milliards-de-voisins/20250902-reportage-comment-briser-le-tabou-du-viol-au-tchad": true,
+    "https://www.rfi.fr/fr/podcasts/priorit%C3%A9-sant%C3%A9/20250820-au-tchad-les-sages-femmes-humanitaires-h%C3%A9ro%C3%AFnes-de-la-sant%C3%A9-maternelle-en-zone-d-urgence": true,
+    "https://www.rfi.fr/fr/podcasts/7-milliards-de-voisins/20210129-reportage-paroles-de-militantes-au-burkina-faso": true
+  },
+  "exclude": {}
+}

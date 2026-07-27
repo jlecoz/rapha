@@ -21,14 +21,14 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Crawl RFI and rebuild episodes.json
+      - name: Crawl RFI and rebuild episodes.json + episodes-all.json
         run: node build-podcasts.mjs
 
       - name: Commit changes if anything is new
         run: |
           git config user.name  "podcast-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add episodes.json covers
+          git add episodes.json episodes-all.json covers 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No changes."
           else

@@ -50,6 +50,26 @@ Vercel auto-builds → open **https://raphaelle-constant.vercel.app/**: hero pla
 
 ---
 
+---
+
+## 1B. ★ Reportages — crawl ALL, feature only the long-format (decided with the user)
+Raphaëlle's RFI author page holds **~300+ items across ~15 pages** — pagination is `https://www.rfi.fr/fr/auteur/rapha%C3%ABlle-constant/{N}/` (~24 items/page). They're a **mix of flagship long-format reportages and short companion segments** (e.g. 2–3-min "Le Conseil Santé" Q&As — "comment se prépare une mission…" — that ride alongside a big reportage). **Decision: crawl everything into the data, but the site features only the flagship long-format reportages.** The short bits are *audio* companions — they do **NOT** go into "Ses modules" (that's Instagram *video* reels); they simply stay out of the featured set (the RFI link covers them).
+
+### Crawler changes (`build-podcasts.mjs`)
+- **Loop all pages:** fetch `…/auteur/rapha%C3%ABlle-constant/{n}/` for `n = 1..N`, stopping when a page yields no new article links (last page detectable from `.m-pagination`). Article URLs match `/fr/podcasts/{show}/{yyyymmdd}-{slug}`.
+- **Per item capture:** title, `show` (URL segment), `date` (the `yyyymmdd` in the slug), place/blurb, cover image, and **`durationSec`** (audio length) — read it from the article page's JSON-LD (`<script type="application/ld+json">` → `duration` ISO-8601, e.g. `PT8M30S`) or the player metadata. **Only fetch article pages for NEW urls** (diff against stored data) so daily runs stay cheap; add ~300ms politeness delay. First full run ≈ ~300 fetches once.
+- **Dedup the "doubles":** dedup by URL; then group items sharing a base topic (normalise the title — strip Q&A/"comment se prépare" suffixes — within the same show ± a few days) and **keep the longest as the primary reportage**, attaching any shorter one as `companions:[…]` (optional "à écouter aussi") rather than a second equal card.
+- **Classify:** on every item set `durationSec` and `format` (`"long"` if `durationSec >= LONGFORM_MIN`, else `"short"`). Mark `flagship:true` for the primary reportages, i.e. **drop pure companion segments**: anything from `le-conseil-santé`, or titles matching `/comment se prépare|questions? à|le conseil|décryptage|chronique/i`, or `durationSec < LONGFORM_MIN`. `LONGFORM_MIN` is a **config constant — start at 180s (3 min)** and tune. Add a small **manual override** map `{ [url]: true|false }` (or `curation.json`) so Raphaëlle/Star can force-include/exclude fuzzy cases — editorial control beats a perfect heuristic.
+- ✅ **Sanity check:** the current 14 in `episodes.json` must all survive as `flagship` — tune the floor/overrides until they do (some legit reportages are only ~4–5 min, so don't set the floor too high).
+- **Two outputs:**
+  - **`episodes.json`** = the **featured flagship long-format set** (latest first) — this is what the site reads; **existing render code unchanged**.
+  - **`episodes-all.json`** = the **full archive** (every item, with `format`/`durationSec`/`companions`) — keeps the data complete for a future "toute son œuvre" view, and keeps the home + Reportages page lean (they load only the featured set).
+
+### Site behaviour
+- **Home strip:** the **6 latest flagship** reportages (as now).
+- **`reportages.html`:** the **featured flagship collection**, latest first, filter by show/country, + a footer link **"Toute son œuvre sur RFI →"** to her author page for completists.
+- Audio (reportages) and video ("Ses modules") stay cleanly separate.
+
 ## 2. What this is
 A static "listening-experience" website for **Raphaëlle Constant**, an independent international radio reporter for **RFI** (Africa-focused audio reportages). Goal: get visitors to press play and *feel* other people's lives. Secondary goal: a lead-gen contact form. Design-forward (cinematic hero, custom motion), not a CMS. **Pure static HTML + CSS + JS — no framework, no build step. Keep it that way.**
 
@@ -57,7 +77,7 @@ A static "listening-experience" website for **Raphaëlle Constant**, an independ
 
 ## 3. Pages & architecture
 - **`index.html`** — home: sticky nav → hero (eyebrow equalizer, H1 "Écoutez le monde." tuning in from radio static, typed subtitle, lede) → **horizontal strip of the 6 latest reportages** (link to RFI) → **[NEW] Ses modules** (video strip) → **[NEW] En images** (photo grid) → **Manifeste** → **Profil** → **Contact** (FormSubmit). Portraits are **base64-embedded**.
-- **`reportages.html`** — full filterable collection (by show; latest first). Cards **JS-rendered** from `episodes.json` with an inline `SEED` fallback.
+- **`reportages.html`** — the **featured flagship (long-format) collection**, latest first, filterable by show/country, with a **"Toute son œuvre sur RFI →"** footer link. Cards **JS-rendered** from `episodes.json` with an inline `SEED` fallback. (See §1B — the site shows only the long-format set; the full ~300-item archive lives in `episodes-all.json`.)
 - Both pages share the **motion system**: Lenis smooth scroll (unpkg CDN) + IntersectionObserver reveal engine + cinematic radio hero. Degrades gracefully under `prefers-reduced-motion` and if the CDN is blocked.
 
 ---
@@ -71,7 +91,7 @@ A static "listening-experience" website for **Raphaëlle Constant**, an independ
 ---
 
 ## 5. Data model & automation
-- **`episodes.json`** (14 reportages) — `{id,title,show,showKey,place,date,url,image,blurb}`; `image` = RFI CDN cover (`s.rfi.fr/...w:1024...`, hotlink OK). Refreshed by **`build-podcasts.mjs`** (crawls her RFI author page) via **`.github/workflows/update-podcasts.yml`** daily; **exits 0 on failure** so it never breaks a deploy. Confirm the Action runs from the new repo.
+- **`episodes.json`** = the **featured flagship long-format reportages** (was 14; will be the curated long set after the full crawl). Item: `{id,title,show,showKey,place,date,url,image,blurb,durationSec,format,flagship,companions?}`; `image` = RFI CDN cover (`s.rfi.fr/...w:1024...`, hotlink OK). **`episodes-all.json`** = the full ~300-item archive. Both produced by **`build-podcasts.mjs`** (now crawls **all ~15 author pages** + classifies by length — see §1B) via **`.github/workflows/update-podcasts.yml`** daily; **exits 0 on failure** so it never breaks a deploy. Confirm the Action runs from the new repo.
 - **`modules.json`** — the video modules (Instagram Reels). Curated/manual (paste a reel URL). Seeded with the Yasmine collab reel + placeholders.
 - **`photos.json`** — the "En images" gallery. Externalise from `photos.html`; 7 real samples now, ~40 originals to come.
 - Optional `discover-modules.mjs` — best-effort auto-discovery of her reels from her public grid. **Unreliable** (Instagram fights scraping; 401s from CI). Keep the manual paste as source of truth; run the spike only as a bonus.
