@@ -1,5 +1,5 @@
 /* ============================================================
-   Raphaëlle Constant — Shared UI behaviours
+   Raphaelle Constant — Shared UI behaviours
    ------------------------------------------------------------
    Loaded (synchronously, in <head>) by every page so animation +
    loading behave identically site-wide. Styling lives in tokens.css
