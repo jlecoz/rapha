@@ -1,43 +1,113 @@
 /* ============================================================
-   Raphaëlle Constant — Design Tokens (single source of truth)
+   Raphaëlle Constant — Design Tokens (SINGLE SOURCE OF TRUTH)
    ------------------------------------------------------------
-   This is the ONE place colours, type and core metrics live.
-   Every page links this file and references var(--token) — so
-   changing a value here updates index.html, reportages.html and
-   the style guide together. Keep it in sync with the brand
-   style guide (raphaelle-constant-style-guide.html).
+   Every page links this file FIRST, then references var(--token).
+   Colours, palette "ambiances", type, spacing AND motion all live
+   here — change a value once and it updates index.html, reportages.html
+   and every component together.
+
+   ⚠️ GOING FORWARD: do not hard-code colours, fonts, timings or the
+   reveal/skeleton behaviour in a page. Add a token here and use it.
+   The live palette switcher works by swapping the [data-theme] blocks
+   below, so anything that should recolour MUST use these tokens.
    ============================================================ */
 
 :root{
-  /* ---- Core palette ---- */
-  --ink:        #171310;              /* warm near-black (backgrounds) */
-  --ink-2:      #211a14;              /* raised dark surface (cards, panels) */
-  --ink-3:      #2c231b;              /* dark hover / tertiary */
-  --paper:      #FBF6EC;              /* warm cream (page background) */
-  --sand:       #EFE2CA;             /* sand section background */
-  --gold:       #E0A24E;             /* golden-hour accent */
-  --ochre:      #B96B34;             /* earthy secondary accent */
-  --red:        #D2321F;             /* signal red (RFI heritage) — accents only */
-  --olive:      #7C7A45;             /* muted savanna green */
+  /* ---- Core palette (default ambiance: "Sur le terrain") ---- */
+  --ink:        #171310;   /* warm near-black — dark section backgrounds */
+  --ink2:       #211a14;   /* raised dark surface (cards, panels) */
+  --ink3:       #2c231b;   /* dark hover / tertiary */
+  --paper:      #FBF6EC;   /* warm cream — page background */
+  --sand:       #EFE2CA;   /* sand section background */
+  --gold:       #E0A24E;   /* golden-hour accent (kickers) */
+  --ochre:      #B96B34;   /* earthy secondary accent */
+  --red:        #D2321F;   /* signal red (RFI heritage) — accents only */
+  --olive:      #7C7A45;   /* muted savanna green */
 
-  /* ---- Lines & muted ---- */
-  --line:       rgba(23,19,16,.14);  /* hairline on light */
-  --line-d:     rgba(255,255,255,.12);/* hairline on dark */
-  --muted:      #6f645a;             /* muted text on light */
-
-  /* ---- Text tints on dark (were hard-coded; now tokens) ---- */
-  --on-dark:        #ece1cf;         /* body text on ink */
-  --on-dark-soft:   #d9cdba;         /* secondary text on ink */
-  --on-dark-mute:   #c9baa2;         /* captions / meta on ink */
-  --card-dark:      #2a211a;         /* image-card fallback base */
+  /* ---- Lines, muted, text tints on dark ---- */
+  --line:       rgba(23,19,16,.14);
+  --lineD:      rgba(255,255,255,.12);
+  --muted:      #6f645a;
+  --on-dark:      #ece1cf;
+  --on-dark-soft: #d9cdba;
+  --on-dark-mute: #c9baa2;
+  --card-dark:    #2a211a;
+  --nav-bg:     rgba(23,19,16,.94);   /* sticky-nav backdrop (recolours per ambiance) */
 
   /* ---- Typography ---- */
-  --font-display: "Anton", sans-serif;              /* big headlines, numbers */
-  --font-label:   "Oswald", sans-serif;             /* kickers, tags, nav, meta */
-  --font-body:    "Newsreader", Georgia, serif;     /* prose, titles, verbatim */
+  --font-display: "Anton", sans-serif;            /* big headlines, numbers */
+  --font-label:   "Oswald", sans-serif;           /* kickers, tags, nav, meta */
+  --font-body:    "Newsreader", Georgia, serif;   /* prose, titles, verbatim */
 
   /* ---- Metrics ---- */
-  --maxw:   1180px;   /* content max width */
-  --radius: 6px;      /* default corner radius */
-  --gap:    22px;     /* default grid gap */
+  --maxw:   1180px;
+  --radius: 6px;
+  --gap:    22px;
+
+  /* ---- Motion system (reveal engine + hero choreography) ---- */
+  --ease-reveal: cubic-bezier(.16, 1, .3, 1);
+  --ease-arrive: cubic-bezier(.34, 1.4, .5, 1);
+  --dur-text: .60s;
+  --dur-move: .75s;
+  --dist-text: 20px;
+  --dist-card: 40px;
+  --dist-side: 88px;
+  --stagger: 100ms;   /* per-card delay in a staggered group */
+  --seq: 120ms;
+}
+
+/* ===== Palette "ambiances" — swapped live by the switcher (default = :root above) ===== */
+html[data-theme="uniforme"]{ /* L'uniforme — noir + camel + crème, rouge-baie */
+  --ink:#17130F; --ink2:#241C15; --ink3:#31271c; --paper:#F2EADB; --sand:#E7DBC3;
+  --gold:#C79A64; --ochre:#A9743F; --red:#C22F3E; --olive:#6E6A4F;
+  --line:rgba(26,23,20,.14); --muted:#6f6656; --nav-bg:rgba(23,19,15,.94);
+}
+html[data-theme="indigo"]{ /* Indigo & sable — pétrole/sable, accent turquoise */
+  --ink:#14201F; --ink2:#1D2C2A; --ink3:#274039; --paper:#F1E8D6; --sand:#E4D8BE;
+  --gold:#D9C4A0; --ochre:#B98A4E; --red:#1F847C; --olive:#5E6B64;
+  --line:rgba(23,33,31,.14); --muted:#5f6b64; --nav-bg:rgba(18,29,28,.95);
+}
+html[data-theme="baie"]{ /* Terre & baie — charcoal + camel, pointe de baie */
+  --ink:#1B1512; --ink2:#251C17; --ink3:#33261d; --paper:#F2EADB; --sand:#E7DBC3;
+  --gold:#C79A64; --ochre:#A9743F; --red:#A83253; --olive:#6E6A4F;
+  --line:rgba(27,21,18,.14); --muted:#6f6656; --nav-bg:rgba(27,21,18,.94);
+}
+/* smooth the recolour when the ambiance changes */
+body,nav,header,section,footer,.modules,.gallery,.modcard,.ep,.hcard,.card{
+  transition:background-color .5s ease,color .5s ease,border-color .5s ease;
+}
+
+/* ============================================================
+   SHARED UI SYSTEM — reveal/stagger + skeleton loading
+   Reusable across every card collection so animation + loading
+   behave identically site-wide (all driven by the motion tokens).
+   ============================================================ */
+
+/* Staggered rise-in for any group of cards. JS sets --i per card and
+   toggles .rc-in when the group scrolls into view. */
+.rc-rise{
+  opacity:0; transform:translateY(var(--dist-card)) rotate(-1.2deg);
+  transition:opacity var(--dur-move) var(--ease-arrive),
+             transform var(--dur-move) var(--ease-arrive);
+  transition-delay:calc(var(--i,0) * var(--stagger));
+  will-change:transform,opacity;
+}
+.rc-in{ opacity:1; transform:none; }
+
+/* Skeleton shimmer — put .skel on an image wrapper while its <img> loads;
+   the image fades in on load (.is-loaded) and the shimmer is removed. */
+@keyframes rc-shimmer{ 100%{ background-position:-200% 0 } }
+.skel{
+  background-image:linear-gradient(90deg,
+    rgba(255,255,255,.05) 25%, rgba(255,255,255,.12) 37%, rgba(255,255,255,.05) 63%);
+  background-size:200% 100%;
+  animation:rc-shimmer 1.25s linear infinite;
+}
+.rc-img{ opacity:0; transition:opacity .45s var(--ease-reveal); }
+.rc-img.is-loaded{ opacity:1; }
+
+@media (prefers-reduced-motion: reduce){
+  .rc-rise{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .skel{ animation:none; }
+  .rc-img{ opacity:1; transition:none; }
 }
