@@ -1,7 +1,7 @@
 {
-  "updated": "2026-09-10",
+  "updated": "2026-09-11",
   "source": "https://www.rfi.fr/fr/auteur/rapha%C3%ABlle-constant/",
-  "count": 175,
+  "count": 178,
   "episodes": [
     {
       "id": "20260719-a-abidjan-dans-la-roue-de-yasmine-diawara",
@@ -876,6 +876,22 @@
       "format": "long"
     },
     {
+      "id": "20241124-dans-l-il-de-pierrot-men-a-madagascar",
+      "title": "20241124-dans-l-il-de-pierrot-men-a-madagascar",
+      "show": "Si loin si proche",
+      "showKey": "recit",
+      "place": "Madagascar",
+      "country": "Madagascar",
+      "date": "",
+      "sort": "20241124",
+      "url": "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20241124-dans-l-%C5%93il-de-pierrot-men-%C3%A0-madagascar",
+      "image": "",
+      "blurb": "",
+      "durationSec": 0,
+      "flagship": true,
+      "format": "unknown"
+    },
+    {
       "id": "20240803-blolab-un-lieu-dedie-au-numerique-pour-la-jeunesse",
       "title": "Atelier des médias - BloLab, un lieu dédié au numérique pour la jeunesse du Bénin (rediffusion)",
       "show": "L'Atelier des médias",
@@ -890,6 +906,22 @@
       "durationSec": 1171,
       "flagship": true,
       "format": "long"
+    },
+    {
+      "id": "20240602-dans-la-reserve-de-biosphere-du-mono-au-benin-01-su",
+      "title": "20240602-dans-la-reserve-de-biosphere-du-mono-au-benin-01-su",
+      "show": "Si loin si proche",
+      "showKey": "recit",
+      "place": "Bénin",
+      "country": "Bénin",
+      "date": "",
+      "sort": "20240602",
+      "url": "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20240602-dans-la-r%C3%A9serve-de-biosph%C3%A8re-du-mono-au-b%C3%A9nin-01-sur-le-lac-ah%C3%A9",
+      "image": "",
+      "blurb": "",
+      "durationSec": 0,
+      "flagship": true,
+      "format": "unknown"
     },
     {
       "id": "20240419-questions-de-femmes-comprendre-son-bebe",
@@ -1618,6 +1650,22 @@
       "durationSec": 2910,
       "flagship": true,
       "format": "long"
+    },
+    {
+      "id": "20221110-vivre-avec-l-albinisme-en-cote-d-ivoire",
+      "title": "20221110-vivre-avec-l-albinisme-en-cote-d-ivoire",
+      "show": "Priorité Santé",
+      "showKey": "sante",
+      "place": "Côte d'Ivoire",
+      "country": "Côte d'Ivoire",
+      "date": "",
+      "sort": "20221110",
+      "url": "https://www.rfi.fr/fr/podcasts/priorit%C3%A9-sant%C3%A9/20221110-vivre-avec-l-albinisme-en-c%C3%B4te-d-ivoire",
+      "image": "",
+      "blurb": "",
+      "durationSec": 0,
+      "flagship": false,
+      "format": "unknown"
     },
     {
       "id": "20221026-accidents-de-la-vie-courante",
