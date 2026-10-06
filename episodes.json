@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-05",
+  "updated": "2026-10-06",
   "source": "https://www.rfi.fr/fr/auteur/rapha%C3%ABlle-constant/",
   "episodes": [
     {
@@ -75,6 +75,22 @@
       "format": "long"
     },
     {
+      "id": "20260606-portrait-d-une-radio-communautaire-au-cameroun-echo",
+      "title": "Atelier des médias - Portrait d'une radio communautaire au Cameroun: Échos des montagnes",
+      "show": "L'Atelier des médias",
+      "showKey": "medias",
+      "place": "Cameroun",
+      "country": "Cameroun",
+      "date": "Juin 2026",
+      "sort": "20260606",
+      "url": "https://www.rfi.fr/fr/podcasts/atelier-des-médias/20260606-portrait-d-une-radio-communautaire-au-cameroun-échos-des-montagnes",
+      "image": "https://s.rfi.fr/media/display/dcaf7d42-612d-11f1-89be-005056bf30b7/w:1280/p:16x9/cameroun-radio-echos-des-montagnes.jpg",
+      "blurb": "",
+      "durationSec": 2083,
+      "flagship": true,
+      "format": "long"
+    },
+    {
       "id": "20260429-soigner-dans-les-airs-un-reportage-long-format-sur",
       "title": "Soigner dans les airs",
       "show": "Priorité Santé",
@@ -136,7 +152,15 @@
       "blurb": "Reconstruire une vie, jour après jour, quand on a tout laissé.",
       "durationSec": 2910,
       "flagship": true,
-      "format": "long"
+      "format": "long",
+      "companions": [
+        {
+          "title": "Le quotidien des exilés soudanais dans les camps de réfugiés au Tchad",
+          "url": "https://www.rfi.fr/fr/podcasts/8-milliards-de-voisins/20260415-le-quotidien-des-exilés-soudanais-dans-les-camps-de-réfugiés-au-tchad",
+          "durationSec": 2910,
+          "show": "8 milliards de voisins"
+        }
+      ]
     },
     {
       "id": "20260329-dans-la-reserve-naturelle-communautaire-du-boundou",
@@ -247,6 +271,12 @@
           "url": "https://www.rfi.fr/fr/podcasts/le-conseil-sant%C3%A9/20250820-tchad-comment-les-sage-femmes-humanitaires-sauvent-la-vie-des-femmes-enceintes-dans-des-camps-de-r%C3%A9fugi%C3%A9s",
           "durationSec": 124,
           "show": "Le Conseil Santé"
+        },
+        {
+          "title": "Au Tchad, les sages-femmes humanitaires, héroïnes de la santé maternelle en zone d’urgence",
+          "url": "https://www.rfi.fr/fr/podcasts/priorité-santé/20250820-au-tchad-les-sages-femmes-humanitaires-héroïnes-de-la-santé-maternelle-en-zone-d-urgence",
+          "durationSec": 2909,
+          "show": "Priorité Santé"
         }
       ]
     },
@@ -507,7 +537,7 @@
       "country": "Côte d'Ivoire",
       "date": "Mai 2023",
       "sort": "20230508",
-      "url": "https://www.rfi.fr/fr/podcasts/8-milliards-de-voisins/20230508-reportage-%C3%A0-abidjan-paroles-de-militantes-en-c%C3%B4te-d-ivoire",
+      "url": "https://www.rfi.fr/fr/podcasts/8-milliards-de-voisins/20230508-reportage-à-abidjan-paroles-de-militantes-en-côte-d-ivoire",
       "image": "https://s.rfi.fr/media/display/a867b188-a300-11ed-a9a3-005056bfb2b6/w:1280/p:16x9/IMG_3989.jpg",
       "blurb": "",
       "durationSec": 2910,
@@ -555,7 +585,7 @@
       "country": "",
       "date": "Nov. 2022",
       "sort": "20221113",
-      "url": "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20221113-au-fil-de-l-eau-en-casamance-au-c%C5%93ur-de-la-r%C3%A9serve-de-kalissaye-1-2",
+      "url": "https://www.rfi.fr/fr/podcasts/si-loin-si-proche/20221113-au-fil-de-l-eau-en-casamance-au-cœur-de-la-réserve-de-kalissaye-1-2",
       "image": "https://s.rfi.fr/media/display/1e506ade-d2e1-11ec-90fc-005056a9a7b9/w:1280/p:16x9/KALISSAYE%20PHOTO%20UNE%20Episode%201%20ok.jpg",
       "blurb": "",
       "durationSec": 2910,
